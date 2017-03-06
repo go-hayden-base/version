@@ -85,22 +85,25 @@ func MaxVersion(c string, v ...string) (string, error) {
 	return max, nil
 }
 
-// MatchConstraintsVersions return versions in v which match all contraint in c
+// MatchConstraintsVersions return versions in v which match all contraints in c
 func MatchConstraintsVersions(c []string, v []string) []string {
 	res := make([]string, 0, len(v))
 	for _, version := range v {
-		match := true
-		for _, constraint := range c {
-			if !MatchVersionConstraint(constraint, version) {
-				match = false
-				break
-			}
-		}
-		if match {
+		if MatchVersionConstrains(c, version) {
 			res = append(res, version)
 		}
 	}
 	return res
+}
+
+// MatchVersionConstrains return version v is match all constraints in c or not
+func MatchVersionConstrains(c []string, v string) bool {
+	for _, constraint := range c {
+		if !MatchVersionConstraint(constraint, v) {
+			return false
+		}
+	}
+	return true
 }
 
 // MatchVersionConstraint return v is match constraint c or not
